@@ -1,0 +1,1 @@
+Original game assets are bundled locally in this app. No external image or sound URLs are used.
