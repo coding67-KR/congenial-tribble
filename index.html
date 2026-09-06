@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
+<title>닭 디펜스</title>
+<style>
+:root{--bg:#f5f1e8;--panel:#fffaf0;--ink:#3c3228;--muted:#7f7366;--accent:#e59b42;--accent2:#5d9c65;--danger:#cf6b55;--line:#e4dac9;}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent} body{margin:0;background:linear-gradient(180deg,#faf7ef,#eee7d9);color:var(--ink);font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;min-height:100vh} button{font:inherit;border:0;cursor:pointer}.app{max-width:1180px;margin:auto;padding:16px;display:flex;flex-direction:column;gap:12px;min-height:100vh}
+.top{display:flex;justify-content:space-between;align-items:center;gap:12px}.brand{font-weight:900;font-size:26px}.brand small{display:block;font-size:12px;color:var(--muted);font-weight:700;margin-top:1px}.stats{display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end}.pill{background:#fffaf0;border:1px solid var(--line);border-radius:14px;padding:8px 12px;font-weight:800;box-shadow:0 4px 14px #5a402010}.pill span{color:var(--accent2)}
+.game{display:grid;grid-template-columns:1fr 280px;gap:12px;align-items:stretch}.boardWrap{background:var(--panel);border:1px solid var(--line);border-radius:22px;padding:10px;box-shadow:0 12px 30px #5a402018}.board{position:relative;aspect-ratio:16/10;overflow:hidden;border-radius:17px;background:linear-gradient(180deg,#b9db98 0 68%,#91bf76 68% 100%);touch-action:none}.board:before{content:"";position:absolute;inset:0;background-image:radial-gradient(#ffffff66 1px,transparent 1px);background-size:28px 28px;opacity:.35}.road{position:absolute;left:8%;right:8%;top:50%;height:13%;transform:translateY(-50%);background:#c7ad80;border:4px solid #ad9368;border-radius:999px;box-shadow:inset 0 0 0 4px #d9c69f}.road:before{content:"";position:absolute;inset:50% 1.5%;border-top:3px dashed #ead9ad;transform:translateY(-50%)}
+.hut{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:120px;height:96px;border-radius:18px;background:#e5c27d;border:5px solid #b28650;z-index:5;box-shadow:0 10px 20px #49351b25}.hut:before{content:"";position:absolute;left:5px;right:5px;top:-36px;border-left:54px solid transparent;border-right:54px solid transparent;border-bottom:42px solid #b65e4d}.hut:after{content:"🥚";position:absolute;font-size:25px;left:45px;bottom:13px}.hut .hp{position:absolute;left:5px;right:5px;top:-13px;height:8px;background:#f3e7cf;border-radius:99px;overflow:hidden}.hut .hp i{display:block;height:100%;background:#5c9d68;width:100%}
+.unit,.enemy{position:absolute;transform:translate(-50%,-50%);z-index:10;display:flex;align-items:center;justify-content:center;user-select:none}.unit{width:50px;height:50px;border-radius:50%;background:#fff7dc;border:3px solid #ba8d55;box-shadow:0 8px 15px #533c1f22;font-size:30px}.unit.sel{outline:4px solid #e59b42}.enemy{width:42px;height:42px;font-size:29px;z-index:11;filter:drop-shadow(0 5px 5px #47351f20)}.enemy .ehp{position:absolute;top:-7px;left:0;right:0;height:5px;background:#eee0d5;border-radius:10px;overflow:hidden}.enemy .ehp i{display:block;height:100%;background:#cf6b55;width:100%}.bullet{position:absolute;width:10px;height:10px;border-radius:50%;background:#f1b74c;box-shadow:0 0 10px #f1b74c88;z-index:12}
+.panel{background:var(--panel);border:1px solid var(--line);border-radius:22px;padding:14px;box-shadow:0 12px 30px #5a402018;display:flex;flex-direction:column;gap:10px}.panel h2{font-size:17px;margin:0}.hint{font-size:12px;color:var(--muted);line-height:1.5}.cards{display:grid;gap:8px}.card{display:flex;align-items:center;gap:10px;padding:10px;border:1px solid var(--line);border-radius:14px;background:#fffdf7}.card b{display:block}.card small{display:block;color:var(--muted);margin-top:2px}.buy{margin-left:auto;background:#5d9c65;color:#fff;padding:8px 10px;border-radius:10px;font-weight:900}.buy:disabled{background:#b9b2a8;cursor:not-allowed}.row{display:flex;gap:8px}.action{flex:1;padding:11px;border-radius:12px;background:#e8ddcb;font-weight:900}.action.main{background:#e59b42;color:#fff}.log{min-height:54px;padding:10px 12px;border-radius:12px;background:#f0e9dd;font-size:12px;line-height:1.45}.tiny{font-size:11px;color:var(--muted)}
+.over{position:absolute;inset:0;display:none;align-items:center;justify-content:center;background:#2d241d88;z-index:30}.modal{width:min(90%,380px);background:#fffaf0;border-radius:22px;padding:24px;text-align:center;box-shadow:0 25px 60px #0004}.modal h3{margin:0 0 8px;font-size:26px}.modal p{color:var(--muted);margin:0 0 18px}.modal button{padding:12px 18px;background:#5d9c65;color:white;border-radius:12px;font-weight:900}
+@media(max-width:820px){.game{grid-template-columns:1fr}.panel{order:2}.brand{font-size:22px}.board{aspect-ratio:1.1}.hut{transform:translate(-50%,-50%) scale(.9)}}
+</style>
+</head>
+<body>
+<div class="app">
+  <div class="top">
+    <div class="brand">🐔 닭 디펜스 <small>농장을 지키는 닭들의 반격</small></div>
+    <div class="stats"><div class="pill">🥚 <span id="egg">120</span></div><div class="pill">❤️ <span id="hpTxt">100</span></div><div class="pill">🌊 WAVE <span id="wave">1</span></div></div>
+  </div>
+  <div class="game">
+    <div class="boardWrap"><div id="board" class="board"><div class="road"></div><div class="hut"><div class="hp"><i id="hpBar"></i></div></div><div id="over" class="over"><div class="modal"><h3 id="overTitle">게임 오버</h3><p id="overText"></p><button id="restart">다시 시작</button></div></div></div></div>
+    <aside class="panel">
+      <h2>🐔 닭 배치</h2>
+      <div class="hint">카드를 눌러 닭을 선택한 뒤, 경기장에 놓아 보세요.</div>
+      <div class="cards">
+        <div class="card"><div style="font-size:31px">🐔</div><div><b>토종닭</b><small>균형형 · 40🥚</small></div><button class="buy" data-type="normal">배치</button></div>
+        <div class="card"><div style="font-size:31px">🐤</div><div><b>병아리</b><small>연사형 · 55🥚</small></div><button class="buy" data-type="fast">배치</button></div>
+        <div class="card"><div style="font-size:31px">🐓</div><div><b>수탉</b><small>강타형 · 65🥚</small></div><button class="buy" data-type="power">배치</button></div>
+        <div class="card"><div style="font-size:31px">🧊</div><div><b>빙닭</b><small>둔화형 · 90🥚</small></div><button class="buy" data-type="ice">배치</button></div>
+        <div class="card"><div style="font-size:31px">👑</div><div><b>왕닭</b><small>광역형 · 150🥚</small></div><button class="buy" data-type="king">배치</button></div>
+      </div>
+      <div class="row"><button class="action main" id="start">▶ 웨이브 시작</button><button class="action" id="skill">🥚 알폭탄</button></div>
+      <div class="log" id="log">닭을 배치하고 웨이브를 시작하세요!</div>
+      <div class="tiny">알폭탄은 웨이브당 1회 · 적을 공격하면 자동으로 알을 발사합니다.</div>
+    </aside>
+  </div>
+</div>
+<script>
+const board=document.getElementById('board'), eggEl=document.getElementById('egg'), hpEl=document.getElementById('hpTxt'), hpBar=document.getElementById('hpBar'), waveEl=document.getElementById('wave'), logEl=document.getElementById('log'), startBtn=document.getElementById('start'), skillBtn=document.getElementById('skill'), over=document.getElementById('over'), overTitle=document.getElementById('overTitle'), overText=document.getElementById('overText');
+const TYPES={normal:{emoji:'🐔',cost:40,dmg:12,range:170,rate:850,slow:0},fast:{emoji:'🐤',cost:55,dmg:6,range:145,rate:350,slow:0},power:{emoji:'🐓',cost:65,dmg:28,range:155,rate:1250,slow:0},ice:{emoji:'🧊',cost:90,dmg:10,range:160,rate:900,slow:.45},king:{emoji:'👑',cost:150,dmg:20,range:200,rate:650,slow:0,splash:55}};
+let state={egg:120,hp:100,wave:1,running:false,spawned:0,toSpawn:0,selected:null,skill:true,units:[],enemies:[],bullets:[],last:performance.now()};
+function ui(){eggEl.textContent=state.egg;hpEl.textContent=Math.max(0,Math.round(state.hp));waveEl.textContent=state.wave;hpBar.style.width=Math.max(0,state.hp)+'%';document.querySelectorAll('.buy').forEach(b=>b.disabled=state.egg<TYPES[b.dataset.type].cost)}
+function msg(t){logEl.textContent=t}
+function pos(e,x,y){e.style.left=x+'px';e.style.top=y+'px'}
+function place(type,x,y){const el=document.createElement('div');el.className='unit';el.textContent=TYPES[type].emoji;pos(el,x,y);board.appendChild(el);const u={type,x,y,el,last:0};state.units.push(u);el.addEventListener('click',ev=>{ev.stopPropagation();state.selected=u;document.querySelectorAll('.unit').forEach(a=>a.classList.remove('sel'));el.classList.add('sel')});ui()}
+document.querySelectorAll('.buy').forEach(b=>b.addEventListener('click',()=>{const t=b.dataset.type;if(state.egg<TYPES[t].cost)return;state.selectedType=t;msg(`${TYPES[t].emoji} ${t==='king'?'왕닭':t==='ice'?'빙닭':t==='power'?'수탉':t==='fast'?'병아리':'토종닭'}을 배치할 위치를 눌러 주세요.`)}));
+board.addEventListener('click',e=>{if(!state.selectedType)return;const r=board.getBoundingClientRect();const x=e.clientX-r.left,y=e.clientY-r.top;if(x>r.width*.43&&x<r.width*.57&&y>r.height*.39&&y<r.height*.61){msg('닭장을 막지 않는 곳에 놓아 주세요.');return}const cost=TYPES[state.selectedType].cost;if(state.egg<cost)return;state.egg-=cost;place(state.selectedType,x,y);msg('배치 완료!');state.selectedType=null;ui()});
+function spawn(){const ang=Math.random()*Math.PI*2;const cx=board.clientWidth/2,cy=board.clientHeight/2;const rr=Math.max(board.clientWidth,board.clientHeight)*.58;let x=cx+Math.cos(ang)*rr,y=cy+Math.sin(ang)*rr;if(ang>Math.PI*.3&&ang<Math.PI*.7){x=Math.random()*board.clientWidth;y=-20}if(ang>Math.PI*1.3&&ang<Math.PI*1.7){x=Math.random()*board.clientWidth;y=board.clientHeight+20}const kinds=[['🐀',22,.75],['🦊',42,.9],['🐺',75,.65],['🐻',135,.45],['🦅',58,1.15]];const k=kinds[Math.floor(Math.random()*kinds.length)];const el=document.createElement('div');el.className='enemy';el.innerHTML=`${k[0]}<div class="ehp"><i></i></div>`;pos(el,x,y);board.appendChild(el);const en={x,y,hp:k[1]*(1+state.wave*.08),max:k[1]*(1+state.wave*.08),speed:45*k[2]*(1+state.wave*.015),el,slow:0};state.enemies.push(en);state.spawned++}
+function shoot(u,target){const t=TYPES[u.type],b=document.createElement('div');b.className='bullet';pos(b,u.x,u.y);board.appendChild(b);state.bullets.push({x:u.x,y:u.y,target,dmg:t.dmg,slow:t.slow,splash:t.splash||0,el:b})}
+function boom(){if(!state.skill||!state.running)return;state.skill=false;skillBtn.disabled=true;state.enemies.forEach(e=>{const dx=e.x-board.clientWidth/2,dy=e.y-board.clientHeight/2;if(Math.hypot(dx,dy)<180)e.hp-=60});msg('🥚 알폭탄 발동! 주변 적이 크게 약해졌습니다.');}
+skillBtn.addEventListener('click',boom);
+function nearest(u){let best=null,bd=1e9;for(const e of state.enemies){const d=Math.hypot(e.x-u.x,e.y-u.y);if(d<TYPES[u.type].range&&d<bd){bd=d;best=e}}return best}
+function end(win=false){state.running=false;over.style.display='flex';overTitle.textContent=win?'🎉 농장 방어 성공!':'💥 농장이 무너졌어요!';overText.textContent=win?`WAVE ${state.wave} 클리어!`: `WAVE ${state.wave}에서 방어에 실패했습니다.`}
+startBtn.addEventListener('click',()=>{if(state.running||over.style.display==='flex')return;state.running=true;state.spawned=0;state.toSpawn=7+state.wave*3;state.skill=true;skillBtn.disabled=false;startBtn.disabled=true;msg(`WAVE ${state.wave} 시작!`);ui()});
+document.getElementById('restart').addEventListener('click',()=>location.reload());
+function tick(now){const dt=Math.min(0.05,(now-state.last)/1000);state.last=now;if(state.running){if(state.spawned<state.toSpawn&&Math.random()<dt*1.8)spawn();for(const e of state.enemies){const cx=board.clientWidth/2,cy=board.clientHeight/2,dx=cx-e.x,dy=cy-e.y,d=Math.hypot(dx,dy)||1;if(e.slow>0)e.slow-=dt;const sp=e.speed*(e.slow>0?.5:1);e.x+=dx/d*sp*dt;e.y+=dy/d*sp*dt;pos(e.el,e.x,e.y);e.el.querySelector('i').style.width=(e.hp/e.max*100)+'%';if(d<80){state.hp-=12*dt*(1+state.wave*.03);e.x-=dx/d*sp*dt;e.y-=dy/d*sp*dt}}for(const u of state.units){const t=TYPES[u.type];u.last-=dt*1000;if(u.last<=0){const e=nearest(u);if(e){u.last=t.rate;shoot(u,e)}}}for(let i=state.bullets.length-1;i>=0;i--){const b=state.bullets[i],e=b.target;if(!state.enemies.includes(e)||e.hp<=0){b.el.remove();state.bullets.splice(i,1);continue}const dx=e.x-b.x,dy=e.y-b.y,d=Math.hypot(dx,dy)||1,sp=300;b.x+=dx/d*sp*dt;b.y+=dy/d*sp*dt;pos(b.el,b.x,b.y);if(d<14){e.hp-=b.dmg;if(b.slow)e.slow=Math.max(e.slow,b.slow*2);if(b.splash)state.enemies.forEach(x=>{if(x!==e&&Math.hypot(x.x-e.x,x.y-e.y)<b.splash)x.hp-=b.dmg*.45});b.el.remove();state.bullets.splice(i,1)}}for(let i=state.enemies.length-1;i>=0;i--){const e=state.enemies[i];if(e.hp<=0){e.el.remove();state.enemies.splice(i,1);state.egg+=Math.max(4,Math.floor(e.max/5))}}if(state.hp<=0){state.hp=0;end(false)}if(state.spawned>=state.toSpawn&&state.enemies.length===0){state.running=false;state.egg+=30+state.wave*8;msg(`WAVE ${state.wave} 클리어! 보너스 ${30+state.wave*8}🥚`);state.wave++;startBtn.disabled=false}ui()}requestAnimationFrame(tick)}requestAnimationFrame(tick);ui();
+</script>
+</body>
+</html>
